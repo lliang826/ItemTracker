@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ItemTracker</string>
+    <string name="all_mylists">My Lists</string>
+    <string name="all_search">Search</string>
 </resources>
