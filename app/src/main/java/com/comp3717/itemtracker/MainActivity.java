@@ -3,6 +3,7 @@ package com.comp3717.itemtracker;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -15,9 +16,16 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomnavigationview_main);
         bottomNavigation.setOnItemSelectedListener(item -> {
-
             item.setChecked(true);
-            System.out.println(item.getTitle());
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            if (item.getItemId() == R.id.item_bottomnav_mylists) {
+                ft.replace(R.id.fragmentcontainerview_main, new MyListsFragment());
+            } else {
+                ft.replace(R.id.fragmentcontainerview_main, new SearchFragment());
+            }
+            ft.commit();
+
             return true;
         });
     }
