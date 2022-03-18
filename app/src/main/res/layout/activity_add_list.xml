@@ -27,7 +27,8 @@
         android:minHeight="48dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
-        android:text="@string/name" />
+        android:text="@string/name"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/textView_addList_visibility"

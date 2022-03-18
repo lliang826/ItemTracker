@@ -41,13 +41,14 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:clickable="true"
+        android:contentDescription="@string/action_button_add"
         android:focusable="true"
         android:tint="@android:color/white"
-        android:contentDescription="@string/action_button_add"
         app:layout_constraintBottom_toTopOf="@+id/bottomnavigationview_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        tools:ignore="ImageContrastCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2_item"
