@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/addList_done"
+        android:id="@+id/item_add_done"
         android:title="@string/done"
         app:showAsAction="always" />
 </menu>

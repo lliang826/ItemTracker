@@ -49,7 +49,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());
-            mContentView = binding.content;
+            mContentView = binding.textviewItem;
         }
 
         @NonNull

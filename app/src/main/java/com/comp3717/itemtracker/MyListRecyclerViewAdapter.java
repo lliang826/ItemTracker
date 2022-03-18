@@ -57,7 +57,7 @@ public class MyListRecyclerViewAdapter extends RecyclerView.Adapter<MyListRecycl
 
         public ViewHolder(FragmentListBinding binding) {
             super(binding.getRoot());
-            mContentView = binding.content;
+            mContentView = binding.textviewList;
         }
 
         @NonNull

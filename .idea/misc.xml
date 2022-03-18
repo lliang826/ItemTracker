@@ -18,12 +18,15 @@
         <entry key="..\:/Users/Lawrence Liang/Desktop/BCIT/Term 3/COMP 3717/Project/app/src/main/res/menu/menu_bottom_nav.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/layout/activity_add_item.xml" value="0.28493150684931506" />
         <entry key="app/src/main/res/layout/activity_add_list.xml" value="0.28493150684931506" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.14722222222222223" />
         <entry key="app/src/main/res/layout/fragment_item.xml" value="0.14722222222222223" />
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.14722222222222223" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_list_list.xml" value="0.28493150684931506" />
         <entry key="app/src/main/res/layout/fragment_my_lists.xml" value="0.28493150684931506" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.28493150684931506" />
+        <entry key="app/src/main/res/menu/menu_add.xml" value="0.28493150684931506" />
+        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.28493150684931506" />
       </map>
     </option>
   </component>

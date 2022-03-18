@@ -10,7 +10,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/textview_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
@@ -18,7 +18,7 @@
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageview_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"

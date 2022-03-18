@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         // creating animations for floating action buttons
-        add = findViewById(R.id.floatingActionButton_add);
-        addList = findViewById(R.id.floatingActionButton3_list);
-        addItem = findViewById(R.id.floatingActionButton2_item);
+        add = findViewById(R.id.floatingactionbutton_main_add);
+        addList = findViewById(R.id.floatingactionbutton_main_list);
+        addItem = findViewById(R.id.floatingactionbutton_main_item);
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_animation);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_animation);
