@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "781289081886",
+    "project_id": "itemtracker-f93a4",
+    "storage_bucket": "itemtracker-f93a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781289081886:android:adac4ce8f358b74f71f20f",
+        "android_client_info": {
+          "package_name": "com.comp3717.itemtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781289081886-k7gev0phd2pu2m40sobks34ljmf2o0hn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGw_lANH4Xgce1ZAx1co3fJYVyFc_8jJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781289081886-k7gev0phd2pu2m40sobks34ljmf2o0hn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
