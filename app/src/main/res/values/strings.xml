@@ -11,6 +11,8 @@
     <string name="visibility">Visibility</string>
     <string name="make_public">Make Public</string>
     <string name="done">Done</string>
+    <string name="listlist_mylists">My Lists</string>
+    <string name="itemlist_subscribe">Subscribe</string>
 
 
 </resources>
