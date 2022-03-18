@@ -2,4 +2,15 @@
     <string name="app_name">ItemTracker</string>
     <string name="all_mylists">My Lists</string>
     <string name="all_search">Search</string>
+
+    <string name="action_button_add">Add Item or List</string>
+    <string name="add_item">Add Item</string>
+    <string name="add_list">Add List</string>
+
+    <string name="name">Name</string>
+    <string name="visibility">Visibility</string>
+    <string name="make_public">Make Public</string>
+    <string name="done">Done</string>
+
+
 </resources>

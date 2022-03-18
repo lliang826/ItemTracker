@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ItemTracker">
         <activity
+            android:name=".AddItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
