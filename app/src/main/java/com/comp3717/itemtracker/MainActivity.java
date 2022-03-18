@@ -54,27 +54,16 @@ public class MainActivity extends AppCompatActivity {
         fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_botton_animation);
         toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_animation);
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAddButtonClicked();
-            }
+        add.setOnClickListener(view -> onAddButtonClicked());
+
+        addList.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddListActivity.class);
+            startActivity(intent);
         });
 
-        addList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-                startActivity(intent);
-            }
+        addItem.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+            startActivity(intent);
         });
     }
 
