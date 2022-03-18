@@ -1,5 +1,7 @@
 package com.comp3717.itemtracker;
 
+import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,11 +10,14 @@ import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
+
+    private NavController navController;
 
     FloatingActionButton add, addList, addItem;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
@@ -71,6 +76,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
+    public void setupNavController(NavController navController) {
+        this.navController = navController;
+
+        // Make sure actions in the ActionBar get propagated to the NavController
+        setupActionBarWithNavController(this, navController);
     }
 
     private void onAddButtonClicked() {
