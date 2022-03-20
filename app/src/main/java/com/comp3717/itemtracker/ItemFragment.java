@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class ItemFragment extends Fragment {
         titleTextView.setText(list.getPlaceholderItem().content);
         subtitleTextView.setText("By John Doe");
         descriptionTextView.setText(list.getPlaceholderItem().details);
-
+        Log.d("List", list.getPlaceholderItem().getItemsMap().toString());
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
@@ -73,7 +74,7 @@ public class ItemFragment extends Fragment {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
+        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(list.getPlaceholderItem().getItemsMap()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }

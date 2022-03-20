@@ -14,4 +14,5 @@ public class List implements Serializable {
     public PlaceholderContent.PlaceholderItem getPlaceholderItem() {
         return placeholderItem;
     }
+
 }

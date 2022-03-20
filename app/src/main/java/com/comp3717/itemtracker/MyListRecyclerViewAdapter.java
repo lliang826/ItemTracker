@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.comp3717.itemtracker.ListFragmentDirections.ActionListFragmentToItemFragment;
+import com.comp3717.itemtracker.placeholder.PlaceholderContent;
 import com.comp3717.itemtracker.placeholder.PlaceholderContent.PlaceholderItem;
 import com.comp3717.itemtracker.databinding.FragmentListBinding;
 
@@ -73,6 +75,7 @@ public class MyListRecyclerViewAdapter extends RecyclerView.Adapter<MyListRecycl
             int itemPosition = mRecyclerView.getChildLayoutPosition(view);
             PlaceholderItem item = mValues.get(itemPosition);
             ActionListFragmentToItemFragment action = ListFragmentDirections.actionListFragmentToItemFragment(new com.comp3717.itemtracker.List(item));
+            Log.d("Debug", "Clicked option: " +  PlaceholderContent.LISTS.get(itemPosition));
             Navigation.findNavController(view).navigate(action);
         }
     }
