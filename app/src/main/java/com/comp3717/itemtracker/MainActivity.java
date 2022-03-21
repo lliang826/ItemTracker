@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         LinkedHashMap<String, PlaceholderContent.PlaceholderItem> LIST_TEMP = new LinkedHashMap<>();
         lists_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
             assert queryDocumentSnapshots != null;
