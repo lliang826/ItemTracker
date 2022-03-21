@@ -14,14 +14,12 @@ import androidx.navigation.NavController;
 import com.comp3717.itemtracker.placeholder.PlaceholderContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,38 +36,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         LinkedHashMap<String, PlaceholderContent.PlaceholderItem> LIST_TEMP = new LinkedHashMap<>();
-        lists_ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    if (document.getData() != null) {
-                        PlaceholderContent.PlaceholderItem placeholderItem = new PlaceholderContent.PlaceholderItem(
-                                document.getId(),
-                                document.getData().get("Name").toString(),
-                                document.getData().get("Detail").toString(),
-                                (ArrayList<String>) document.getData().get("Lists"));
-                        if (!PlaceholderContent.LISTS.contains(placeholderItem)) {
-                            PlaceholderContent.LISTS.add(placeholderItem);
-                        }
-                        LIST_TEMP.put(document.getId(),placeholderItem);
-                    }
+        lists_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            assert queryDocumentSnapshots != null;
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                document.getData();
+                PlaceholderContent.PlaceholderItem placeholderItem = new PlaceholderContent.PlaceholderItem(
+                        document.getId(),
+                        Objects.requireNonNull(document.getData().get("Name")).toString(),
+                        Objects.requireNonNull(document.getData().get("Detail")).toString(),
+                        (ArrayList<String>) document.getData().get("Lists"));
+                if (!PlaceholderContent.LISTS.contains(placeholderItem)) {
+                    PlaceholderContent.LISTS.add(placeholderItem);
                 }
-                PlaceholderContent.LIST_MAP = LIST_TEMP;
+                LIST_TEMP.put(document.getId(),placeholderItem);
             }
+            PlaceholderContent.LIST_MAP = LIST_TEMP;
         });
         LinkedHashMap<String, PlaceholderContent.PlaceholderItem> ITEM_TEMP = new LinkedHashMap<>();
-        items_ref.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    if (document.getData() != null) {
-                        ITEM_TEMP.put(
-                                document.getId(), new PlaceholderContent.PlaceholderItem(document.getId(), document.getData().get("Name").toString())
-                        );
-                    }
-                }
-                PlaceholderContent.ITEM_MAP = ITEM_TEMP;
+        items_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            assert queryDocumentSnapshots != null;
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                document.getData();
+                ITEM_TEMP.put(
+                        document.getId(), new PlaceholderContent.PlaceholderItem(document.getId(), Objects.requireNonNull(document.getData().get("Name")).toString())
+                );
             }
+            PlaceholderContent.ITEM_MAP = ITEM_TEMP;
         });
 
         // creating animations for floating action buttons
