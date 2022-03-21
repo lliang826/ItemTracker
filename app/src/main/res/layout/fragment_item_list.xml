@@ -36,12 +36,6 @@
             android:layout_margin="20dp"
             android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/button_itemlist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:text="@string/itemlist_subscribe" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerview_itemlist"
