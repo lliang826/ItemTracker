@@ -65,7 +65,7 @@ public class ItemFragment extends Fragment {
         titleTextView.setText(list.getPlaceholderItem().content);
         subtitleTextView.setText("By John Doe");
         descriptionTextView.setText(list.getPlaceholderItem().details);
-        Log.d("List", list.getPlaceholderItem().getItemsMap().toString());
+        Log.d("List", list.getPlaceholderItem().getItemsArray().toString());
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
@@ -74,7 +74,7 @@ public class ItemFragment extends Fragment {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(list.getPlaceholderItem().getItemsMap()));
+        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(list.getPlaceholderItem().getItemsArray()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }

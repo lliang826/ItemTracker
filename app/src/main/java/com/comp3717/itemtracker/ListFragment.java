@@ -18,10 +18,16 @@ import android.view.ViewGroup;
 import com.comp3717.itemtracker.placeholder.PlaceholderContent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,6 +37,8 @@ import java.util.Map;
  */
 public class ListFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -65,46 +73,6 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_list, container, false);
-        db.collection("items")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for(QueryDocumentSnapshot document: task.getResult()) {
-                                PlaceholderContent.ITEM_MAP.put(
-                                        document.getId(), new PlaceholderContent.PlaceholderItem(document.getId(), document.getData().get("Name").toString())
-                                );
-                            }
-                        }else {
-                            Log.d("Debug", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-        db.collection("lists")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for(QueryDocumentSnapshot document: task.getResult()) {
-                                Log.d("Debug", document.getId());
-                                Log.d("Debug", document.getData().toString());
-                                PlaceholderContent.PlaceholderItem placeholderItem = new PlaceholderContent.PlaceholderItem(
-                                        document.getId(),
-                                        document.getData().get("Name").toString(),
-                                        document.getData().get("Detail").toString(),
-                                        new LinkedHashMap<String, String>((Map)document.getData().get("List")));
-                                if (!PlaceholderContent.LISTS.contains(placeholderItem)) {
-                                    PlaceholderContent.LISTS.add(placeholderItem);
-                                }
-                                PlaceholderContent.LIST_MAP.put(document.getId(),placeholderItem);
-                            }
-                        }else {
-                            Log.d("Debug", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
         Log.d("items", PlaceholderContent.ITEM_MAP.toString());
         Log.d("lists", PlaceholderContent.LISTS.toString());
 

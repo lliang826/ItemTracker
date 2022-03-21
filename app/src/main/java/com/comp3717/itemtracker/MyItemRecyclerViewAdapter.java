@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,8 +30,8 @@ import java.util.Map;
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final Map mValues;
-    public MyItemRecyclerViewAdapter(Map items) {
+    private final ArrayList<String> mValues;
+    public MyItemRecyclerViewAdapter(ArrayList<String> items) {
         mValues = items;
     }
 
@@ -43,10 +44,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        PlaceholderItem result = PlaceholderContent.ITEM_MAP.get(mValues.keySet().toArray()[position].toString());
+        PlaceholderItem result = PlaceholderContent.ITEM_MAP.get(mValues.get(position));
         if (result != null) {
             holder.mContentView.setText(result.content);
-            holder.checkBox.setChecked((Boolean) mValues.values().toArray()[position]);
         }
     }
 

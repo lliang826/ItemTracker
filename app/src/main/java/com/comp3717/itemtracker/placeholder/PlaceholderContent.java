@@ -28,13 +28,13 @@ public class PlaceholderContent {
     /**
      * An array of sample (placeholder) items.
      */
-    public static final List<PlaceholderItem> ITEMS = new ArrayList<PlaceholderItem>();
-    public static final List<PlaceholderItem> LISTS = new ArrayList<PlaceholderItem>();
+    public static List<PlaceholderItem> ITEMS = new ArrayList<PlaceholderItem>();
+    public static List<PlaceholderItem> LISTS = new ArrayList<PlaceholderItem>();
     /**
      * A map of sample (placeholder) items, by ID.
      */
-    public static final LinkedHashMap<String, PlaceholderItem> ITEM_MAP = new LinkedHashMap<String, PlaceholderItem>();
-    public static final LinkedHashMap<String, PlaceholderItem> LIST_MAP = new LinkedHashMap<String, PlaceholderItem>();
+    public static LinkedHashMap<String, PlaceholderItem> ITEM_MAP = new LinkedHashMap<>();
+    public static LinkedHashMap<String, PlaceholderItem> LIST_MAP = new LinkedHashMap<>();
 
     private static final int COUNT = 5;
 
@@ -59,11 +59,11 @@ public class PlaceholderContent {
     }
 
     private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(String.valueOf(position), "Local Item " + position, makeDetails(position),  new LinkedHashMap<String, String>());
+        return new PlaceholderItem(String.valueOf(position), "Local Item " + position, makeDetails(position),  new ArrayList<>());
     }
 
     private static PlaceholderItem createPlaceholderList(int position) {
-        return new PlaceholderItem(String.valueOf(position), "Local List " + position, makeDetails(position),  new LinkedHashMap<String, String>());
+        return new PlaceholderItem(String.valueOf(position), "Local List " + position, makeDetails(position),  new ArrayList<>());
     }
 
     private static String makeDetails(int position) {
@@ -82,26 +82,26 @@ public class PlaceholderContent {
         public final String id;
         public final String content;
         public final String details;
-        public final LinkedHashMap map;
-        public PlaceholderItem(String id, String content, String details, LinkedHashMap map) {
+        public final ArrayList<String> lists;
+        public PlaceholderItem(String id, String content, String details, ArrayList<String> lists) {
             this.id = id;
             this.content = content;
             this.details = details;
-            this.map = map;
+            this.lists = lists;
         }
 
         public PlaceholderItem(String id, String content) {
             this.id = id;
             this.content = content;
             this.details = "";
-            this.map = new LinkedHashMap<String, String>();
+            this.lists = new ArrayList<>();
         }
 
-        public LinkedHashMap getItemsMap() {
-            if (this.map != null) {
-                return this.map;
+        public ArrayList<String> getItemsArray() {
+            if (this.lists != null) {
+                return this.lists;
             } else {
-                return new LinkedHashMap<String, String>();
+                return new ArrayList<>();
             }
         }
 
