@@ -35,37 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-
-        LinkedHashMap<String, PlaceholderContent.PlaceholderItem> LIST_TEMP = new LinkedHashMap<>();
-        lists_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            assert queryDocumentSnapshots != null;
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                document.getData();
-                PlaceholderContent.PlaceholderItem placeholderItem = new PlaceholderContent.PlaceholderItem(
-                        document.getId(),
-                        Objects.requireNonNull(document.getData().get("Name")).toString(),
-                        Objects.requireNonNull(document.getData().get("Detail")).toString(),
-                        (ArrayList<String>) document.getData().get("Lists"));
-                if (!PlaceholderContent.LISTS.contains(placeholderItem)) {
-                    PlaceholderContent.LISTS.add(placeholderItem);
-                }
-                LIST_TEMP.put(document.getId(),placeholderItem);
-            }
-            PlaceholderContent.LIST_MAP = LIST_TEMP;
-        });
-        LinkedHashMap<String, PlaceholderContent.PlaceholderItem> ITEM_TEMP = new LinkedHashMap<>();
-        items_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            assert queryDocumentSnapshots != null;
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                document.getData();
-                ITEM_TEMP.put(
-                        document.getId(), new PlaceholderContent.PlaceholderItem(document.getId(), Objects.requireNonNull(document.getData().get("Name")).toString())
-                );
-            }
-            PlaceholderContent.ITEM_MAP = ITEM_TEMP;
-        });
-
         // creating animations for floating action buttons
         add = findViewById(R.id.floatingactionbutton_main_add);
         addList = findViewById(R.id.floatingactionbutton_main_list);
@@ -86,6 +55,43 @@ public class MainActivity extends AppCompatActivity {
         addItem.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
             startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
+        LinkedHashMap<String, PlaceholderContent.PlaceholderItem> LIST_TEMP = new LinkedHashMap<>();
+        lists_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            assert queryDocumentSnapshots != null;
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                document.getData();
+                PlaceholderContent.PlaceholderItem placeholderItem = new PlaceholderContent.PlaceholderItem(
+                        document.getId(),
+                        Objects.requireNonNull(document.getData().get("Name")).toString(),
+                        Objects.requireNonNull(document.getData().get("Detail")).toString(),
+                        (ArrayList<String>) document.getData().get("Lists"));
+                if (!PlaceholderContent.LISTS.contains(placeholderItem)) {
+                    PlaceholderContent.LISTS.add(placeholderItem);
+                }
+                LIST_TEMP.put(document.getId(),placeholderItem);
+            }
+            PlaceholderContent.LIST_MAP = LIST_TEMP;
+        });
+
+        LinkedHashMap<String, PlaceholderContent.PlaceholderItem> ITEM_TEMP = new LinkedHashMap<>();
+        items_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            assert queryDocumentSnapshots != null;
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                document.getData();
+                ITEM_TEMP.put(
+                        document.getId(), new PlaceholderContent.PlaceholderItem(document.getId(), Objects.requireNonNull(document.getData().get("Name")).toString())
+                );
+            }
+            PlaceholderContent.ITEM_MAP = ITEM_TEMP;
         });
     }
 

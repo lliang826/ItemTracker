@@ -114,7 +114,8 @@ public class AddItemActivity extends AppCompatActivity {
             Switch switchy = findViewById(R.id.switch_additem_visibility);
 
             if (itemName.matches("")) {
-                Toast.makeText(this, "Please enter a name for your item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please enter a name for your item",
+                        Toast.LENGTH_SHORT).show();
             } else {
                 if (publicListsNames.contains(listName) && switchy.isChecked()) {
                     Map<String, Object> data = new HashMap<>();
@@ -136,9 +137,17 @@ public class AddItemActivity extends AppCompatActivity {
                                     }
 
                                     db.collection("lists").document(listId)
-                                            .update(
-                                                    "Lists", FieldValue.arrayUnion(itemId)
-                                            );
+                                            .update("Lists", FieldValue.arrayUnion(itemId))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d("Debug", "DocumentSnapshot successfully updated!");
+                                            finish();
+                                            Toast.makeText(AddItemActivity.this,
+                                                    "\"" + itemName + "\"" + " successfully added to " + listName,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -148,10 +157,6 @@ public class AddItemActivity extends AppCompatActivity {
                                 }
                             });
                 }
-
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(this, "Item successfully added to " + listName, Toast.LENGTH_LONG).show();
             }
         }
 
