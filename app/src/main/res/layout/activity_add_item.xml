@@ -25,12 +25,19 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="30dp"
         android:ems="10"
-        android:hint="@string/name"
+        android:hint="@string/item_name"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp" />
+
+    <Spinner
+        android:id="@+id/addItem_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/list_name"
+        android:minHeight="48dp" />
 
     <TextView
         android:id="@+id/textview_additem_visibility"

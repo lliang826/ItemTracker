@@ -8,6 +8,9 @@
     <string name="add_list">Add List</string>
 
     <string name="name">Name</string>
+    <string name="item_name">Item Name</string>
+    <string name="list_name">List Name</string>
+
     <string name="visibility">Visibility</string>
     <string name="make_public">Make Public</string>
     <string name="done">Done</string>
