@@ -23,4 +23,8 @@ public class ListManager {
     public List<com.comp3717.itemtracker.List> getPrivateLists() {
         return privateLists;
     }
+
+    public void addPrivateList(com.comp3717.itemtracker.List list) {
+        privateLists.add(list);
+    }
 }

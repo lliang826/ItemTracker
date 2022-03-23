@@ -16,6 +16,10 @@ public class Item implements Serializable {
     public Item() {
     }
 
+    public Item(String name) {
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }

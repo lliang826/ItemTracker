@@ -54,7 +54,7 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     void spinnerSetup() {
-        db.collection("lists")
+        db.collection("lists2")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -63,7 +63,7 @@ public class AddItemActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Debug", document.getData().toString());
 
-                                publicLists.put(document.getId(), document.getData().get("Name").toString());
+                                publicLists.put(document.getId(), document.getData().get("name").toString());
                             }
                         } else {
                             Log.w("Debug", "Error getting documents.", task.getException());
@@ -120,36 +120,39 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             } else {
                 if (publicListsNames.contains(listName) && switchy.isChecked()) {
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("Name", itemName);
+                    Item newItem = new Item(itemName);
 
-                    db.collection("items")
-                            .add(data)
+                    String listId = "";
+                    for (String s : publicLists.keySet()) {
+                        if (publicLists.get(s).equals(listName)) {
+                            listId = s;
+                        }
+                    }
+
+                    db.collection("lists2").document(listId).
+                            collection("items")
+                            .add(newItem)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     Log.d("Debug", "DocumentSnapshot successfully written!");
-                                    String itemId = documentReference.getId();
+                                    finish();
+                                    Toast.makeText(AddItemActivity.this,
+                                            "\"" + itemName + "\"" + " successfully added to " + listName,
+                                            Toast.LENGTH_LONG).show();
 
-                                    String listId = "";
-                                    for (String s : publicLists.keySet()) {
-                                        if (publicLists.get(s).equals(listName)) {
-                                            listId = s;
-                                        }
-                                    }
-
-                                    db.collection("lists").document(listId)
-                                            .update("Lists", FieldValue.arrayUnion(itemId))
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Log.d("Debug", "DocumentSnapshot successfully updated!");
-                                            finish();
-                                            Toast.makeText(AddItemActivity.this,
-                                                    "\"" + itemName + "\"" + " successfully added to " + listName,
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+//                                    String itemId = documentReference.getId();
+//
+//
+//                                    db.collection("lists").document(listId)
+//                                            .update("Lists", FieldValue.arrayUnion(itemId))
+//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void unused) {
+//                                            Log.d("Debug", "DocumentSnapshot successfully updated!");
+//                                            finish();
+//                                        }
+//                                    });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

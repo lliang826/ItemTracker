@@ -23,8 +23,7 @@ public class List implements Serializable {
         this.privateItems = new ArrayList<>();
     }
 
-    public List(String id, String name, String description) {
-        this.id = id;
+    public List(String name, String description) {
         this.name = name;
         this.description = description;
         this.privateItems = new ArrayList<>();
