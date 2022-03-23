@@ -34,9 +34,17 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position, Item model) {
-        holder.mItem = model;
-        holder.mContentView.setText(model.getName());
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull Item model) {
+        if (position < super.getItemCount()) {
+            // Public
+            holder.mItem = model;
+            holder.mContentView.setText(model.getName());
+        } else {
+            // Private
+            position -= super.getItemCount();
+            holder.mItem = mValues.get(position);
+            holder.mContentView.setText(mValues.get(position).getName());
+        }
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -55,10 +63,10 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
         });
     }
 
-//    @Override
-//    public int getItemCount() {
-//        return mValues.size();
-//    }
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() + mValues.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;

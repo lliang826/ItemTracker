@@ -38,18 +38,26 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position, @NonNull com.comp3717.itemtracker.List model) {
-        holder.mItem = model;
-        holder.mContentView.setText(model.getName());
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull com.comp3717.itemtracker.List model) {
+        if (position < super.getItemCount()) {
+            // Public
+            holder.mItem = model;
+            holder.mContentView.setText(model.getName());
+        } else {
+            // Private
+            position -= super.getItemCount();
+            holder.mItem = mValues.get(position);
+            holder.mContentView.setText(mValues.get(position).getName());
+        }
 
-        View.OnClickListener onClickListener = new MyOnClickListener(model);
+        View.OnClickListener onClickListener = new MyOnClickListener(holder.mItem);
         holder.itemView.setOnClickListener(onClickListener);
     }
 
-//    @Override
-//    public int getItemCount() {
-//        return mValues.size();
-//    }
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() + mValues.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
