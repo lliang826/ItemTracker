@@ -56,4 +56,12 @@ public class List implements Serializable {
     public java.util.List<Item> getPrivateItems() {
         return privateItems;
     }
+
+    public boolean addPrivateItem(Item item) {
+        return privateItems.add(item);
+    }
+
+    public boolean removePrivateItem(Item item) {
+        return privateItems.remove(item);
+    }
 }

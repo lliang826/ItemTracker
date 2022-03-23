@@ -24,7 +24,11 @@ public class ListManager {
         return privateLists;
     }
 
-    public void addPrivateList(com.comp3717.itemtracker.List list) {
-        privateLists.add(list);
+    public boolean addPrivateList(com.comp3717.itemtracker.List list) {
+        return privateLists.add(list);
+    }
+
+    public boolean removePrivateList(com.comp3717.itemtracker.List list) {
+        return privateLists.remove(list);
     }
 }
