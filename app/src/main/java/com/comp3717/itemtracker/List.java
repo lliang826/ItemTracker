@@ -24,7 +24,6 @@ public class List implements Serializable {
     }
 
     public List(String name, String description) {
-        this.id = ListManager.getInstance().generateUid();
         this.name = name;
         this.description = description;
         this.privateItems = new ArrayList<>();
