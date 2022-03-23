@@ -17,6 +17,7 @@
     <string name="listlist_mylists">My Lists</string>
     <string name="itemlist_subscribe">Subscribe</string>
     <string name="detail">Detail(optional)</string>
+    <string name="_0">0%</string>
 
 
 </resources>

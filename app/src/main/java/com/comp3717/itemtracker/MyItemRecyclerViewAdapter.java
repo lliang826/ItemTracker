@@ -1,9 +1,9 @@
 package com.comp3717.itemtracker;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,17 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.comp3717.itemtracker.databinding.FragmentItemBinding;
 import com.comp3717.itemtracker.placeholder.PlaceholderContent;
 import com.comp3717.itemtracker.placeholder.PlaceholderContent.PlaceholderItem;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
@@ -48,6 +39,22 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         if (result != null) {
             holder.mContentView.setText(result.content);
         }
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ItemFragment.total_checked++;
+                } else {
+                    ItemFragment.total_checked--;
+                }
+                int percentage = 0;
+                if(getItemCount() > 0) {
+                    percentage = ItemFragment.total_checked * 100 / getItemCount() ;
+                }
+                ItemFragment.progressTextView.setText(percentage + "%");
+                ItemFragment.progressBar.setProgress(percentage);
+            }
+        });
     }
 
     @Override

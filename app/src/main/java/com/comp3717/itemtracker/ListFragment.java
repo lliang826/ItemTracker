@@ -85,7 +85,6 @@ public class ListFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
         recyclerView.setAdapter(new MyListRecyclerViewAdapter(PlaceholderContent.LISTS, recyclerView));
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }
 }

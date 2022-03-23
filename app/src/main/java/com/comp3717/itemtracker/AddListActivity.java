@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddListActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -36,6 +39,7 @@ public class AddListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
     }
 
     @Override
@@ -43,7 +47,6 @@ public class AddListActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_add, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         EditText text_name = findViewById(R.id.edittext_addlist_name);
@@ -56,6 +59,11 @@ public class AddListActivity extends AppCompatActivity {
         data.put("Name", value);
         data.put("Lists", new ArrayList<>());
         data.put("Detail", detail_value);
+        String myvar = "HelloWorld";
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("var1", myvar);
+        editor.commit();
         if (item.getItemId() == R.id.item_add_done) {
             if(isChecked && !value.isEmpty()) {
                 db.collection("lists").whereEqualTo("Name", value)

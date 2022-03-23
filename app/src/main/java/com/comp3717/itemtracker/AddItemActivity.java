@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -46,8 +47,9 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        db = FirebaseFirestore.getInstance();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
+        db = FirebaseFirestore.getInstance();
         spinnerSetup();
     }
 
