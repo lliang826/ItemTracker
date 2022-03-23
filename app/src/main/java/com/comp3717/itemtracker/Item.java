@@ -16,6 +16,11 @@ public class Item implements Serializable {
     public Item() {
     }
 
+    public Item(String name) {
+        this.id = ListManager.getInstance().generateUid();
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }
