@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.comp3717.itemtracker.databinding.FragmentItemBinding;
-import com.comp3717.itemtracker.placeholder.PlaceholderContent;
-import com.comp3717.itemtracker.placeholder.PlaceholderContent.PlaceholderItem;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
+ * {@link RecyclerView.Adapter} that can display a {@link Item}.
  */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<String> mValues;
-    public MyItemRecyclerViewAdapter(ArrayList<String> items) {
+    private final List<Item> mValues;
+    public MyItemRecyclerViewAdapter(List<Item> items, @NonNull FirestoreRecyclerOptions<Item> options) {
+        super(options);
         mValues = items;
     }
 
@@ -34,11 +34,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        PlaceholderItem result = PlaceholderContent.ITEM_MAP.get(mValues.get(position));
-        if (result != null) {
-            holder.mContentView.setText(result.content);
-        }
+    public void onBindViewHolder(final ViewHolder holder, int position, Item model) {
+        holder.mItem = model;
+        holder.mContentView.setText(model.getName());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -57,15 +55,15 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return mValues.size();
-    }
+//    @Override
+//    public int getItemCount() {
+//        return mValues.size();
+//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
         public final CheckBox checkBox;
-        public PlaceholderItem mItem;
+        public Item mItem;
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());

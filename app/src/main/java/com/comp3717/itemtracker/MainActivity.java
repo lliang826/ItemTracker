@@ -4,9 +4,7 @@ import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavControlle
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,14 +12,8 @@ import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 
-import com.comp3717.itemtracker.placeholder.PlaceholderContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton add, addList, addItem;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     private boolean clicked = false;
-    CollectionReference lists_ref = FirebaseFirestore.getInstance().collection("lists");
-    CollectionReference items_ref = FirebaseFirestore.getInstance().collection("items");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,38 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
-
-        LinkedHashMap<String, PlaceholderContent.PlaceholderItem> LIST_TEMP = new LinkedHashMap<>();
-        lists_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            assert queryDocumentSnapshots != null;
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                document.getData();
-                PlaceholderContent.PlaceholderItem placeholderItem = new PlaceholderContent.PlaceholderItem(
-                        document.getId(),
-                        Objects.requireNonNull(document.getData().get("Name")).toString(),
-                        Objects.requireNonNull(document.getData().get("Detail")).toString(),
-                        (ArrayList<String>) document.getData().get("Lists"));
-                if (!PlaceholderContent.LISTS.contains(placeholderItem)) {
-                    PlaceholderContent.LISTS.add(placeholderItem);
-                    finish();
-                    startActivity(getIntent());
-                }
-                LIST_TEMP.put(document.getId(),placeholderItem);
-            }
-            PlaceholderContent.LIST_MAP = LIST_TEMP;
-        });
-
-        LinkedHashMap<String, PlaceholderContent.PlaceholderItem> ITEM_TEMP = new LinkedHashMap<>();
-        items_ref.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            assert queryDocumentSnapshots != null;
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                document.getData();
-                ITEM_TEMP.put(
-                        document.getId(), new PlaceholderContent.PlaceholderItem(document.getId(), Objects.requireNonNull(document.getData().get("Name")).toString())
-                );
-            }
-            PlaceholderContent.ITEM_MAP = ITEM_TEMP;
-        });
 
         // creating animations for floating action buttons
         add = findViewById(R.id.floatingactionbutton_main_add);

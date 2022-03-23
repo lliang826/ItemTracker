@@ -1,35 +1,32 @@
 package com.comp3717.itemtracker;
 
-import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.comp3717.itemtracker.ListFragmentDirections.ActionListFragmentToItemFragment;
-import com.comp3717.itemtracker.placeholder.PlaceholderContent;
-import com.comp3717.itemtracker.placeholder.PlaceholderContent.PlaceholderItem;
 import com.comp3717.itemtracker.databinding.FragmentListBinding;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.
+ * {@link RecyclerView.Adapter} that can display a {@link com.comp3717.itemtracker.List}.
  */
-public class MyListRecyclerViewAdapter extends RecyclerView.Adapter<MyListRecyclerViewAdapter.ViewHolder> {
+public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp3717.itemtracker.List, MyListRecyclerViewAdapter.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
-
-    private final View.OnClickListener mOnClickListener = new MyOnClickListener();
+    private final List<com.comp3717.itemtracker.List> mValues;
 
     private final RecyclerView mRecyclerView;
 
-    public MyListRecyclerViewAdapter(List<PlaceholderItem> items, RecyclerView rcv) {
+    public MyListRecyclerViewAdapter(List<com.comp3717.itemtracker.List> items, RecyclerView rcv, @NonNull FirestoreRecyclerOptions<com.comp3717.itemtracker.List> options) {
+        super(options);
         mValues = items;
         mRecyclerView = rcv;
     }
@@ -37,25 +34,26 @@ public class MyListRecyclerViewAdapter extends RecyclerView.Adapter<MyListRecycl
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        @NonNull FragmentListBinding viewBinding = FragmentListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        viewBinding.getRoot().setOnClickListener(mOnClickListener);
-        return new ViewHolder(viewBinding);
+        return new ViewHolder(FragmentListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).content);
+    public void onBindViewHolder(final ViewHolder holder, int position, @NonNull com.comp3717.itemtracker.List model) {
+        holder.mItem = model;
+        holder.mContentView.setText(model.getName());
+
+        View.OnClickListener onClickListener = new MyOnClickListener(model);
+        holder.itemView.setOnClickListener(onClickListener);
     }
 
-    @Override
-    public int getItemCount() {
-        return mValues.size();
-    }
+//    @Override
+//    public int getItemCount() {
+//        return mValues.size();
+//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
-        public PlaceholderItem mItem;
+        public com.comp3717.itemtracker.List mItem;
 
         public ViewHolder(FragmentListBinding binding) {
             super(binding.getRoot());
@@ -70,12 +68,16 @@ public class MyListRecyclerViewAdapter extends RecyclerView.Adapter<MyListRecycl
     }
 
     private class MyOnClickListener implements View.OnClickListener {
+
+        private final com.comp3717.itemtracker.List item;
+
+        public MyOnClickListener(com.comp3717.itemtracker.List item) {
+            this.item = item;
+        }
+
         @Override
         public void onClick(View view) {
-            int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-            PlaceholderItem item = mValues.get(itemPosition);
-            ActionListFragmentToItemFragment action = ListFragmentDirections.actionListFragmentToItemFragment(new com.comp3717.itemtracker.List(item));
-            Log.d("Debug", "Clicked option: " +  PlaceholderContent.LISTS.get(itemPosition));
+            ActionListFragmentToItemFragment action = ListFragmentDirections.actionListFragmentToItemFragment(this.item);
             Navigation.findNavController(view).navigate(action);
         }
     }

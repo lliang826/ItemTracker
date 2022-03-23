@@ -2,36 +2,31 @@ package com.comp3717.itemtracker;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.comp3717.itemtracker.placeholder.PlaceholderContent;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 /**
  * A fragment representing a list of Items.
  */
 public class ItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     public static int total_checked = 0;
     public static TextView progressTextView;
     public static ProgressBar progressBar;
+
+    private MyItemRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,23 +35,13 @@ public class ItemFragment extends Fragment {
     public ItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ItemFragment newInstance(int columnCount) {
-        ItemFragment fragment = new ItemFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+    public static ItemFragment newInstance() {
+        return new ItemFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -68,32 +53,41 @@ public class ItemFragment extends Fragment {
         TextView titleTextView = view.findViewById(R.id.textview_itemlist_title);
         TextView subtitleTextView = view.findViewById(R.id.textview_itemlist_subtitle);
         TextView descriptionTextView = view.findViewById(R.id.textview_itemlist_description);
-        titleTextView.setText(list.getPlaceholderItem().content);
-        descriptionTextView.setText(list.getPlaceholderItem().details);
-        Log.d("List", list.getPlaceholderItem().getItemsArray().toString());
-        int percentage = 0;
-        if (list.getPlaceholderItem().getItemsArray().size() > 0) {
-            percentage = total_checked / list.getPlaceholderItem().getItemsArray().size() * 100;
-        }
+        titleTextView.setText(list.getName());
+        descriptionTextView.setText(list.getDescription());
         progressTextView = view.findViewById(R.id.textview_itemlist_progress);
         progressBar =view.findViewById(R.id.progress_itemlist_horizontal);
+
+        titleTextView.setText(list.getName());
+        descriptionTextView.setText(list.getDescription());
+
+        Query query = FirebaseFirestore.getInstance()
+                .collection("lists2").document(list.getId()).collection("items");
+
+        FirestoreRecyclerOptions<Item> options = new FirestoreRecyclerOptions.Builder<Item>()
+                .setQuery(query, Item.class)
+                .build();
 
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(list.getPlaceholderItem().getItemsArray()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), options);
+        recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
+        adapter.stopListening();
         total_checked = 0;
     }
 }
