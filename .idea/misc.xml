@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/project-itemtracker-2/app/src/main/res/layout/fragment_item.xml" value="0.20820668693009117" />
+        <entry key="..\:/AndroidProject/project-itemtracker-2/app/src/main/res/layout/fragment_item_list.xml" value="0.2966058763931104" />
         <entry key="..\:/AndroidProject/project-itemtracker/app/src/main/res/layout/activity_add_list.xml" value="0.33106884057971014" />
         <entry key="..\:/AndroidProject/project-itemtracker/app/src/main/res/layout/activity_main.xml" value="0.33106884057971014" />
         <entry key="..\:/AndroidProject/project-itemtracker/app/src/main/res/layout/fragment_item.xml" value="0.33106884057971014" />

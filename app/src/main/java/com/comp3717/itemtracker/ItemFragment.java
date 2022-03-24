@@ -2,6 +2,7 @@ package com.comp3717.itemtracker;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Arrays;
+
 /**
  * A fragment representing a list of Items.
  */
@@ -27,6 +30,8 @@ public class ItemFragment extends Fragment {
     public static ProgressBar progressBar;
 
     private MyItemRecyclerViewAdapter adapter;
+    private MyPrivateItemAdapter adapter2;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,34 +65,43 @@ public class ItemFragment extends Fragment {
 
         titleTextView.setText(list.getName());
         descriptionTextView.setText(list.getDescription());
-
-        Query query = FirebaseFirestore.getInstance()
-                .collection("lists2").document(list.getId()).collection("items");
-
-        FirestoreRecyclerOptions<Item> options = new FirestoreRecyclerOptions.Builder<Item>()
-                .setQuery(query, Item.class)
-                .build();
-
-        // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), options);
-        recyclerView.setAdapter(adapter);
+        if (list.getId() == null) {
+            adapter2 = new MyPrivateItemAdapter(list.getPrivateItems());
+            recyclerView.setAdapter(adapter2);
+
+        } else {
+            Query query = FirebaseFirestore.getInstance()
+                    .collection("lists2").document(list.getId()).collection("items");
+            FirestoreRecyclerOptions<Item> options = new FirestoreRecyclerOptions.Builder<Item>()
+                    .setQuery(query, Item.class)
+                    .build();
+            adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), options);
+            recyclerView.setAdapter(adapter);
+
+        }
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        return view;
+
+        // Set the adapter
+return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
+        if (adapter != null) {
+            adapter.startListening();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
         total_checked = 0;
     }
 }

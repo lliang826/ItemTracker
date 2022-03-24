@@ -60,11 +60,15 @@ public class List implements Serializable {
     }
 
     public boolean addPrivateItem(Item item) {
-        return privateItems.add(item);
+        boolean result = privateItems.add(item);
+        ListManager.getInstance().savePrivateLists();
+        return result;
     }
 
     public boolean removePrivateItem(Item item) {
-        return privateItems.remove(item);
+        boolean result = privateItems.remove(item);
+        ListManager.getInstance().savePrivateLists();
+        return result;
     }
 
     @NonNull

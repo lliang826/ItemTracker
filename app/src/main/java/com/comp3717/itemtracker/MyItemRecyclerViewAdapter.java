@@ -21,6 +21,7 @@ import java.util.List;
 public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, MyItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<Item> mValues;
+
     public MyItemRecyclerViewAdapter(List<Item> items, @NonNull FirestoreRecyclerOptions<Item> options) {
         super(options);
         mValues = items;
@@ -61,6 +62,12 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
                 ItemFragment.progressBar.setProgress(percentage);
             }
         });
+    }
+
+    @NonNull
+    @Override
+    public Item getItem(int position) {
+        return position < super.getItemCount() ? super.getItem(position) : mValues.get(position);
     }
 
     @Override
