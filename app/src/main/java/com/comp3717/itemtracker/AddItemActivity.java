@@ -70,6 +70,9 @@ public class AddItemActivity extends AppCompatActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 list = allLists.get(i);
+                                Log.w("list Debug", list.getName());
+                                Log.w("allLists Debug", allLists.toString());
+
                                 if (list.getId() == null) {
                                     switchy.setChecked(false);
                                     switchy.setEnabled(false);
@@ -133,7 +136,6 @@ public class AddItemActivity extends AppCompatActivity {
                 } else if (!switchy.isChecked()) {
                     Item newItem = new Item(itemName);
                     boolean added = list.addPrivateItem(newItem);
-
                     if (added) {
                         finish();
                         Toast.makeText(AddItemActivity.this,

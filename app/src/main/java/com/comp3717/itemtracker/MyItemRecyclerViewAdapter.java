@@ -21,6 +21,7 @@ import java.util.List;
 public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, MyItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<Item> mValues;
+
     public MyItemRecyclerViewAdapter(List<Item> items, @NonNull FirestoreRecyclerOptions<Item> options) {
         super(options);
         mValues = items;
