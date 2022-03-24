@@ -119,7 +119,7 @@ public class AddItemActivity extends AppCompatActivity {
                                     Log.d("Debug", "DocumentSnapshot successfully written!");
                                     finish();
                                     Toast.makeText(AddItemActivity.this,
-                                            "\"" + itemName + "\"" + " successfully added to "
+                                            "\"" + itemName + "\"" + " added to "
                                                     + list.getName(), Toast.LENGTH_LONG).show();
                                 }
                             })
@@ -137,7 +137,7 @@ public class AddItemActivity extends AppCompatActivity {
                     if (added) {
                         finish();
                         Toast.makeText(AddItemActivity.this,
-                                "\"" + itemName + "\"" + " successfully added to "
+                                "\"" + itemName + "\"" + " added to "
                                         + list.getName(), Toast.LENGTH_LONG).show();
                     } else {
                         Log.w("Debug", "Error writing to private list");
