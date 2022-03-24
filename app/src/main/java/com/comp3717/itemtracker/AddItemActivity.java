@@ -3,9 +3,6 @@ package com.comp3717.itemtracker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,28 +15,20 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class AddItemActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
-    String listName;
-    HashMap<String, String> publicLists = new HashMap<>();
-    ArrayList<String> publicListsNames = new ArrayList<>();
-    ArrayList<String> privateLists = new ArrayList<>();
+    List list;
+    ArrayList<com.comp3717.itemtracker.List> publicLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,33 +45,31 @@ public class AddItemActivity extends AppCompatActivity {
     void spinnerSetup() {
         db.collection("lists2")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Debug", document.getData().toString());
-
-                                publicLists.put(document.getId(), document.getData().get("name").toString());
-                            }
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        if (documentSnapshots.isEmpty()) {
+                            Log.d("Debug", "onSuccess: LIST EMPTY");
+                            return;
                         } else {
-                            Log.w("Debug", "Error getting documents.", task.getException());
+                            java.util.List<com.comp3717.itemtracker.List> lists
+                                    = documentSnapshots.toObjects(com.comp3717.itemtracker.List.class);
+                            publicLists.addAll(lists);
+                            Log.d("Debug", "onSuccess: " + publicLists);
                         }
 
                         Spinner spinner = findViewById(R.id.addItem_spinner);
                         Switch switchy = findViewById(R.id.switch_additem_visibility);
 
-                        publicListsNames.addAll(publicLists.values());
-
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AddItemActivity.this,
-                                android.R.layout.simple_spinner_item, publicListsNames);
+                        ArrayAdapter<List> arrayAdapter = new ArrayAdapter<>(AddItemActivity.this,
+                                android.R.layout.simple_spinner_item, publicLists);
                         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                listName = spinner.getSelectedItem().toString();
-                                if (privateLists.contains(listName)) {
+                                list = publicLists.get(i);
+                                if (list.getId() == null) {
                                     switchy.setChecked(false);
                                     switchy.setEnabled(false);
                                 }
@@ -115,21 +102,14 @@ public class AddItemActivity extends AppCompatActivity {
 
             Switch switchy = findViewById(R.id.switch_additem_visibility);
 
-            if (itemName.matches("")) {
+            if (itemName.replaceAll("\\s+","").matches("")) {
                 Toast.makeText(this, "Please enter a name for your item",
                         Toast.LENGTH_SHORT).show();
             } else {
-                if (publicListsNames.contains(listName) && switchy.isChecked()) {
+                if (list.getId() != null && switchy.isChecked()) {
                     Item newItem = new Item(itemName);
 
-                    String listId = "";
-                    for (String s : publicLists.keySet()) {
-                        if (publicLists.get(s).equals(listName)) {
-                            listId = s;
-                        }
-                    }
-
-                    db.collection("lists2").document(listId).
+                    db.collection("lists2").document(list.getId()).
                             collection("items")
                             .add(newItem)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -138,21 +118,8 @@ public class AddItemActivity extends AppCompatActivity {
                                     Log.d("Debug", "DocumentSnapshot successfully written!");
                                     finish();
                                     Toast.makeText(AddItemActivity.this,
-                                            "\"" + itemName + "\"" + " successfully added to " + listName,
-                                            Toast.LENGTH_LONG).show();
-
-//                                    String itemId = documentReference.getId();
-//
-//
-//                                    db.collection("lists").document(listId)
-//                                            .update("Lists", FieldValue.arrayUnion(itemId))
-//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void unused) {
-//                                            Log.d("Debug", "DocumentSnapshot successfully updated!");
-//                                            finish();
-//                                        }
-//                                    });
+                                            "\"" + itemName + "\"" + " successfully added to "
+                                                    + list.getName(), Toast.LENGTH_LONG).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

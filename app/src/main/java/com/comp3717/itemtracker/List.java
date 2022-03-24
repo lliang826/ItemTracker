@@ -1,5 +1,7 @@
 package com.comp3717.itemtracker;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -63,5 +65,11 @@ public class List implements Serializable {
 
     public boolean removePrivateItem(Item item) {
         return privateItems.remove(item);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
