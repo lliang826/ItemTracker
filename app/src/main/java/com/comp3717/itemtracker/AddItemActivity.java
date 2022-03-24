@@ -28,7 +28,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
     List list;
-    ArrayList<com.comp3717.itemtracker.List> publicLists = new ArrayList<>();
+    ArrayList<com.comp3717.itemtracker.List> allLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class AddItemActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         db = FirebaseFirestore.getInstance();
+        allLists.addAll(ListManager.getInstance().getPrivateLists());
         spinnerSetup();
     }
 
@@ -54,21 +55,21 @@ public class AddItemActivity extends AppCompatActivity {
                         } else {
                             java.util.List<com.comp3717.itemtracker.List> lists
                                     = documentSnapshots.toObjects(com.comp3717.itemtracker.List.class);
-                            publicLists.addAll(lists);
-                            Log.d("Debug", "onSuccess: " + publicLists);
+                            allLists.addAll(lists);
+                            Log.d("Debug", "onSuccess: " + allLists);
                         }
 
                         Spinner spinner = findViewById(R.id.addItem_spinner);
                         Switch switchy = findViewById(R.id.switch_additem_visibility);
 
                         ArrayAdapter<List> arrayAdapter = new ArrayAdapter<>(AddItemActivity.this,
-                                android.R.layout.simple_spinner_item, publicLists);
+                                android.R.layout.simple_spinner_item, allLists);
                         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                list = publicLists.get(i);
+                                list = allLists.get(i);
                                 if (list.getId() == null) {
                                     switchy.setChecked(false);
                                     switchy.setEnabled(false);
@@ -128,15 +129,22 @@ public class AddItemActivity extends AppCompatActivity {
                                     Log.w("Debug", "Error writing document", e);
                                 }
                             });
+
+                } else if (!switchy.isChecked()) {
+                    Item newItem = new Item(itemName);
+                    boolean added = list.addPrivateItem(newItem);
+
+                    if (added) {
+                        finish();
+                        Toast.makeText(AddItemActivity.this,
+                                "\"" + itemName + "\"" + " successfully added to "
+                                        + list.getName(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.w("Debug", "Error writing to private list");
+                    }
                 }
             }
         }
-
-//        int myvar = 12;
-//        SharedPreferences preferences = AddItemActivity.this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putInt("var1", myvar);
-//        editor.commit();
 
         return super.onOptionsItemSelected(item);
     }
