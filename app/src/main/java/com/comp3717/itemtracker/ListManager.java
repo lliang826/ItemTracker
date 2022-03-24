@@ -3,8 +3,8 @@ package com.comp3717.itemtracker;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -64,5 +64,19 @@ public class ListManager {
             privateLists = new Gson().fromJson(prefs.getString(PRIVATE_LISTS, null), LIST_TYPE);
         }
         return privateLists;
+    }
+
+    public String loadLocalPrivateLists() {
+        String list = prefs.getString(PRIVATE_LISTS, "");
+        return list;
+    }
+
+    public boolean inPrivateLists(String name) {
+        for (com.comp3717.itemtracker.List list : loadPrivateLists()) {
+            if (name.equals(list.toString())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
