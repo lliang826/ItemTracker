@@ -54,6 +54,12 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
         holder.itemView.setOnClickListener(onClickListener);
     }
 
+    @NonNull
+    @Override
+    public com.comp3717.itemtracker.List getItem(int position) {
+        return position < super.getItemCount() ? super.getItem(position) : mValues.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return super.getItemCount() + mValues.size();
