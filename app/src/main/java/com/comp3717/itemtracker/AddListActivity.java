@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,21 +53,16 @@ public class AddListActivity extends AppCompatActivity {
         EditText text_name = findViewById(R.id.edittext_addlist_name);
         EditText text_detail = findViewById(R.id.edittext_addlist_detail);
         Switch switch_widget = (findViewById(R.id.switch_addlist_visibility));
-        String value = text_name.getText().toString();
+        String name_value = text_name.getText().toString();
         String detail_value = text_detail.getText().toString();
         boolean isChecked = switch_widget.isChecked();
         Map<String, Object> data = new HashMap<>();
-        data.put("Name", value);
+        data.put("Name", name_value);
         data.put("Lists", new ArrayList<>());
         data.put("Detail", detail_value);
-        String myvar = "HelloWorld";
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("var1", myvar);
-        editor.commit();
         if (item.getItemId() == R.id.item_add_done) {
-            if(isChecked && !value.isEmpty()) {
-                db.collection("lists").whereEqualTo("Name", value)
+            if(isChecked && !name_value.isEmpty()) {
+                db.collection("lists").whereEqualTo("Name", name_value)
                         .limit(1).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
@@ -98,7 +94,15 @@ public class AddListActivity extends AppCompatActivity {
                         Log.d("ERROR", String.valueOf(task.getException()));
                     }
                 });
-            } else if(value.isEmpty()) {
+            } else if (!isChecked && !name_value.isEmpty()) {
+                ListManager lm = ListManager.getInstance();
+                if (lm.inPrivateLists(name_value)) {
+                    alertDialog("Duplicate list name found. Please use another list name.");
+                } else {
+                    ListManager.getInstance().addPrivateList(new com.comp3717.itemtracker.List(name_value, detail_value));
+                    finish();
+                }
+            } else if(name_value.isEmpty()) {
                 alertDialog("Please enter a list name!");
             }
         }
