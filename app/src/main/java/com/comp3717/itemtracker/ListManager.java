@@ -48,6 +48,9 @@ public class ListManager {
     }
 
     public boolean addPrivateList(com.comp3717.itemtracker.List list) {
+        if (privateLists.contains(list)) {
+            return false;
+        }
         boolean result = privateLists.add(list);
         savePrivateLists();
         return result;
@@ -64,14 +67,5 @@ public class ListManager {
             privateLists = new Gson().fromJson(prefs.getString(PRIVATE_LISTS, null), LIST_TYPE);
         }
         return privateLists;
-    }
-
-    public boolean inPrivateLists(String name) {
-        for (com.comp3717.itemtracker.List list : loadPrivateLists()) {
-            if (name.equals(list.toString())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
