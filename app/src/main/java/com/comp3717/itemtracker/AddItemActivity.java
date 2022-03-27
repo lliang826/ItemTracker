@@ -76,6 +76,8 @@ public class AddItemActivity extends AppCompatActivity {
                                 if (list.getId() == null) {
                                     switchy.setChecked(false);
                                     switchy.setEnabled(false);
+                                } else {
+                                    switchy.setEnabled(true);
                                 }
                             }
 

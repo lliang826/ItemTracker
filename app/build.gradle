@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
     implementation 'com.google.firebase:firebase-core:19.0.2'
 
+    implementation 'com.google.code.gson:gson:2.8.8'
+
     // FirebaseUI for Cloud Firestore
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
 
