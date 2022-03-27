@@ -89,13 +89,19 @@ public class ItemFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
+        List list = ItemFragmentArgs.fromBundle(getArguments()).getList();
+        if (list.getId() != null) {
+            adapter.startListening();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
+        List list = ItemFragmentArgs.fromBundle(getArguments()).getList();
+        if (list.getId() != null) {
+            adapter.stopListening();
+        }
         total_checked = 0;
     }
 }
