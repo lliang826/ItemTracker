@@ -115,8 +115,8 @@ public class AddItemActivity extends AppCompatActivity {
                 if (list.getId() != null && switchy.isChecked()) {
                     Item newItem = new Item(itemName);
 
-                    db.collection("lists2").document(list.getId()).
-                            collection("items")
+                    db.collection("lists2").document(list.getId())
+                            .collection("items")
                             .add(newItem)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override

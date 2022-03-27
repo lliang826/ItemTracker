@@ -15,10 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -78,8 +84,45 @@ public class ListFragment extends Fragment {
                 if (list.getId() == null) {
                     ListManager.getInstance().removePrivateList(list);
                 } else {
-                    FirebaseFirestore.getInstance().collection("lists2")
-                            .document(list.getId())
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    ArrayList<String> documentIDs = new ArrayList<>();
+                    db.collection("lists2")
+                            .document(list.getId()).collection("items")
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d("Debug", document.getId() + " => " + document.getData());
+                                            documentIDs.add(document.getId());
+                                        }
+                                    } else {
+                                        Log.d("Debug", "Error getting sub-collection documents: ",
+                                                task.getException());
+                                    }
+                                }
+                            });
+
+                    for (String doc : documentIDs) {
+                        db.collection("lists2").document(list.getId())
+                                .collection("items").document(doc)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("Debug", "Sub-collection document deleted!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("Debug", "Error deleting sub-collection document");
+                                    }
+                                });
+                    }
+
+                    db.collection("lists2").document(list.getId())
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
