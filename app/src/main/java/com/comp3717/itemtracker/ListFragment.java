@@ -96,6 +96,7 @@ public class ListFragment extends Fragment {
                 }
                 Toast.makeText(context, "\"" + list.getName() + "\"" + " successfully deleted",
                         Toast.LENGTH_LONG).show();
+                adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);

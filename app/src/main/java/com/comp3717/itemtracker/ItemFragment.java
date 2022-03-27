@@ -125,6 +125,7 @@ public class ItemFragment extends Fragment {
                         }
                         Toast.makeText(context, "\"" + item.getName() + "\"" +
                                 " successfully deleted", Toast.LENGTH_LONG).show();
+                        adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
                     }
                 }
         );
