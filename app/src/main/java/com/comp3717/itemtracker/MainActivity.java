@@ -31,10 +31,6 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
 
-        ListManager.getInstance().addPrivateList(new List("Private list 1", "Lorem ipsum"));
-        ListManager.getInstance().addPrivateList(new List("Private list 2", "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "));
-
-
         // creating animations for floating action buttons
         add = findViewById(R.id.floatingactionbutton_main_add);
         addList = findViewById(R.id.floatingactionbutton_main_list);
