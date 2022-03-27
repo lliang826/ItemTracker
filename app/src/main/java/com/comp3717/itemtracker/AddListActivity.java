@@ -43,21 +43,17 @@ public class AddListActivity extends AppCompatActivity {
         String name_value = text_name.getText().toString();
         String detail_value = text_detail.getText().toString();
         boolean isChecked = switch_widget.isChecked();
-        Map<String, Object> data = new HashMap<>();
-        data.put("Name", name_value);
-        data.put("Lists", new ArrayList<>());
-        data.put("Detail", detail_value);
+        com.comp3717.itemtracker.List list = new List(name_value, detail_value);
         if (item.getItemId() == R.id.item_add_done) {
             if(isChecked && !name_value.isEmpty()) {
-                db.collection("lists").whereEqualTo("Name", name_value)
+                db.collection("lists2").whereEqualTo("name", name_value)
                         .limit(1).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         assert querySnapshot != null;
-                        if (querySnapshot.isEmpty()) {
-                            Log.d("MESSAGE", "doc not found");
-                            db.collection("lists")
-                                    .add(data)
+                        if (querySnapshot.isEmpty() && !ListManager.getInstance().getPrivateLists().contains(list)) {
+                            db.collection("lists2")
+                                    .add(list)
                                     .addOnSuccessListener(documentReference -> {
                                         Log.d("AddList", "DocumentSnapshot written with ID: " + documentReference.getId());
                                         finish();
