@@ -26,7 +26,6 @@ import com.google.firebase.firestore.Query;
 public class ListFragment extends Fragment {
 
     private MyListRecyclerViewAdapter adapter;
-    FirebaseFirestore db;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,7 +41,6 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -80,7 +78,8 @@ public class ListFragment extends Fragment {
                 if (list.getId() == null) {
                     ListManager.getInstance().removePrivateList(list);
                 } else {
-                    db.collection("lists2").document(list.getId())
+                    FirebaseFirestore.getInstance().collection("lists2")
+                            .document(list.getId())
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
