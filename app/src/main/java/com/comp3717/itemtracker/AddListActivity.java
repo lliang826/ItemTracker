@@ -1,30 +1,17 @@
 package com.comp3717.itemtracker;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -39,7 +26,7 @@ public class AddListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
     }
 
@@ -52,7 +39,7 @@ public class AddListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         EditText text_name = findViewById(R.id.edittext_addlist_name);
         EditText text_detail = findViewById(R.id.edittext_addlist_detail);
-        Switch switch_widget = (findViewById(R.id.switch_addlist_visibility));
+        Switch switch_widget = findViewById(R.id.switch_addlist_visibility);
         String name_value = text_name.getText().toString();
         String detail_value = text_detail.getText().toString();
         boolean isChecked = switch_widget.isChecked();
@@ -66,26 +53,21 @@ public class AddListActivity extends AppCompatActivity {
                         .limit(1).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
+                        assert querySnapshot != null;
                         if (querySnapshot.isEmpty()) {
                             Log.d("MESSAGE", "doc not found");
                             db.collection("lists")
                                     .add(data)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d("AddList", "DocumentSnapshot written with ID: " + documentReference.getId());
-                                            finish();
-                                        }
+                                    .addOnSuccessListener(documentReference -> {
+                                        Log.d("AddList", "DocumentSnapshot written with ID: " + documentReference.getId());
+                                        finish();
                                     })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("AddList", "Error adding document", e);
-                                            alertDialog("Something wrong...");
-                                        }
+                                    .addOnFailureListener(e -> {
+                                        Log.w("AddList", "Error adding document", e);
+                                        alertDialog("Something wrong...");
                                     });
                         } else {
-                            for (QueryDocumentSnapshot document : querySnapshot){
+                            for (QueryDocumentSnapshot ignored : querySnapshot){
                                 alertDialog("Duplicate list name found. Please use another list name.");
                                 Log.d("MESSAGE", "doc found");
                             }
@@ -95,14 +77,13 @@ public class AddListActivity extends AppCompatActivity {
                     }
                 });
             } else if (!isChecked && !name_value.isEmpty()) {
-                ListManager lm = ListManager.getInstance();
-                if (lm.inPrivateLists(name_value)) {
-                    alertDialog("Duplicate list name found. Please use another list name.");
-                } else {
-                    ListManager.getInstance().addPrivateList(new com.comp3717.itemtracker.List(name_value, detail_value));
+                boolean success = ListManager.getInstance().addPrivateList(new com.comp3717.itemtracker.List(name_value, detail_value));
+                if (success) {
                     finish();
+                } else {
+                    alertDialog("Duplicate list name found. Please use another list name.");
                 }
-            } else if(name_value.isEmpty()) {
+            } else {
                 alertDialog("Please enter a list name!");
             }
         }
@@ -117,10 +98,7 @@ public class AddListActivity extends AppCompatActivity {
         dialog.setMessage(str);
         dialog.setTitle("Warning");
         dialog.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                    }
+                (dialog1, which) -> {
                 });
         AlertDialog alertDialog=dialog.create();
         alertDialog.show();

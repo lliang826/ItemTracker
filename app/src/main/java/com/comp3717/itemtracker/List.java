@@ -12,14 +12,12 @@ import java.util.ArrayList;
 @IgnoreExtraProperties
 public class List implements Serializable {
 
-    @DocumentId
-    private String id;
-
-    private String name;
-    private String description;
-    
     @Exclude
     private final java.util.List<Item> privateItems;
+    @DocumentId
+    private String id;
+    private String name;
+    private String description;
 
     public List() {
         this.privateItems = new ArrayList<>();
@@ -75,5 +73,14 @@ public class List implements Serializable {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof List) {
+            List l = (List) o;
+            return this.name.equals(l.getName());
+        } else
+            return false;
     }
 }

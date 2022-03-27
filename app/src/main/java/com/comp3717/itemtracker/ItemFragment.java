@@ -2,7 +2,6 @@ package com.comp3717.itemtracker;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import java.util.Arrays;
 
 /**
  * A fragment representing a list of Items.
@@ -30,8 +28,6 @@ public class ItemFragment extends Fragment {
     public static ProgressBar progressBar;
 
     private MyItemRecyclerViewAdapter adapter;
-    private MyPrivateItemAdapter adapter2;
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,33 +61,36 @@ public class ItemFragment extends Fragment {
 
         titleTextView.setText(list.getName());
         descriptionTextView.setText(list.getDescription());
+
+        DocumentReference document;
+        if (list.getId() != null) {
+            document = FirebaseFirestore.getInstance()
+                    .collection("lists2").document(list.getId());
+        } else {
+            document = FirebaseFirestore.getInstance()
+                    .collection("lists2").document();
+        }
+        Query query = document.collection("items");
+
+        FirestoreRecyclerOptions<Item> options = new FirestoreRecyclerOptions.Builder<Item>()
+                .setQuery(query, Item.class)
+                .build();
+
+        // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        if (list.getId() == null) {
-            adapter2 = new MyPrivateItemAdapter(list.getPrivateItems());
-            recyclerView.setAdapter(adapter2);
-
-        } else {
-            Query query = FirebaseFirestore.getInstance()
-                    .collection("lists2").document(list.getId()).collection("items");
-            FirestoreRecyclerOptions<Item> options = new FirestoreRecyclerOptions.Builder<Item>()
-                    .setQuery(query, Item.class)
-                    .build();
-            adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), options);
-            recyclerView.setAdapter(adapter);
-
-        }
+        adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), options);
+        recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
-        // Set the adapter
-return view;
+        return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (adapter != null) {
+        List list = ItemFragmentArgs.fromBundle(getArguments()).getList();
+        if (list.getId() != null) {
             adapter.startListening();
         }
     }
@@ -99,7 +98,8 @@ return view;
     @Override
     public void onStop() {
         super.onStop();
-        if (adapter != null) {
+        List list = ItemFragmentArgs.fromBundle(getArguments()).getList();
+        if (list.getId() != null) {
             adapter.stopListening();
         }
         total_checked = 0;

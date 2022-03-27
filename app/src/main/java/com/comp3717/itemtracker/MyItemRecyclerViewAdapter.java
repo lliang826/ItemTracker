@@ -67,7 +67,7 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
     @NonNull
     @Override
     public Item getItem(int position) {
-        return position < super.getItemCount() ? super.getItem(position) : mValues.get(position);
+        return position < super.getItemCount() ? super.getItem(position) : mValues.get(position - super.getItemCount());
     }
 
     @Override
