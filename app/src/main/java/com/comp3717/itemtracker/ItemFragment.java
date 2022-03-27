@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -110,18 +108,8 @@ public class ItemFragment extends Fragment {
                                     .document(list.getId()).collection("items")
                                     .document(item.getId())
                                     .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Log.d("Debug", "DocumentSnapshot successfully deleted!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("Debug", "Error deleting document");
-                                        }
-                                    });
+                                    .addOnSuccessListener(unused -> Log.d("Debug", "DocumentSnapshot successfully deleted!"))
+                                    .addOnFailureListener(e -> Log.w("Debug", "Error deleting document"));
                         }
                         Toast.makeText(context, "\"" + item.getName() + "\"" +
                                 " successfully deleted", Toast.LENGTH_LONG).show();
