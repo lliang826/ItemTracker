@@ -53,6 +53,7 @@ public class List implements Serializable {
         this.description = description;
     }
 
+    @Exclude
     public java.util.List<Item> getPrivateItems() {
         return privateItems;
     }
@@ -77,8 +78,8 @@ public class List implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof List) {
-            List l = (List) o;
+        if (o instanceof com.comp3717.itemtracker.List) {
+            com.comp3717.itemtracker.List l = (com.comp3717.itemtracker.List) o;
             return this.name.equals(l.getName());
         } else
             return false;
