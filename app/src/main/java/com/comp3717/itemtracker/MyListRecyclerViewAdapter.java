@@ -43,14 +43,16 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
         if (position < super.getItemCount()) {
             // Public
             holder.mItem = model;
-            holder.mContentView.setText(model.getName());
-            holder.mContentView.setTextColor(Color.BLUE);
+            holder.mContentViewName.setText(model.getName());
+            holder.mContentViewName.setTextColor(Color.BLUE);
+            holder.mContentViewDescription.setText(model.getDescription());
         } else {
             // Private
             position -= super.getItemCount();
             holder.mItem = mValues.get(position);
-            holder.mContentView.setText(mValues.get(position).getName());
-            holder.mContentView.setTextColor(Color.BLACK);
+            holder.mContentViewName.setText(mValues.get(position).getName());
+            holder.mContentViewName.setTextColor(Color.BLACK);
+            holder.mContentViewDescription.setText(mValues.get(position).getDescription());
         }
 
         View.OnClickListener onClickListener = new MyOnClickListener(holder.mItem);
@@ -69,18 +71,20 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mContentView;
+        public final TextView mContentViewName;
+        public final TextView mContentViewDescription;
         public com.comp3717.itemtracker.List mItem;
 
         public ViewHolder(FragmentListBinding binding) {
             super(binding.getRoot());
-            mContentView = binding.textviewList;
+            mContentViewName = binding.textviewListName;
+            mContentViewDescription = binding.textviewListDescription;
         }
 
         @NonNull
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mContentViewName.getText() + "'";
         }
     }
 
