@@ -59,7 +59,7 @@ public class AddItemActivity extends AppCompatActivity {
 
                     ArrayAdapter<List> arrayAdapter = new ArrayAdapter<>(AddItemActivity.this,
                             android.R.layout.simple_spinner_item, allLists);
-                    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
