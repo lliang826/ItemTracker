@@ -24,6 +24,8 @@
             android:layout_marginHorizontal="@dimen/text_margin"
             android:layout_marginTop="@dimen/text_margin"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="18sp" />
 
@@ -34,6 +36,8 @@
             android:layout_marginHorizontal="@dimen/text_margin"
             android:layout_marginBottom="@dimen/text_margin"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@android:color/secondary_text_light"
             android:textSize="14sp" />
