@@ -1,5 +1,6 @@
 package com.comp3717.itemtracker;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,25 +101,42 @@ public class ItemFragment extends Fragment {
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         Item item = adapter.getItem(viewHolder.getBindingAdapterPosition());
-                        if (list.getId() == null) {
-                            list.removePrivateItem(item);
-                        } else {
-                            FirebaseFirestore.getInstance().collection("lists2")
-                                    .document(list.getId()).collection("items")
-                                    .document(item.getId())
-                                    .delete()
-                                    .addOnSuccessListener(unused -> Log.d("Debug", "DocumentSnapshot successfully deleted!"))
-                                    .addOnFailureListener(e -> Log.w("Debug", "Error deleting document"));
-                        }
-                        Toast.makeText(context, "\"" + item.getName() + "\"" +
-                                " successfully deleted", Toast.LENGTH_LONG).show();
-                        adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
+
+                        // set up delete confirmation popup
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setCancelable(true);
+                        builder.setMessage("Are you sure you want to delete \"" + item.getName() + "\"?");
+                        builder.setPositiveButton("Confirm",
+                                (dialog, which) -> {
+                                    // delete the swiped item
+                                    deleteItem(list, item, context, viewHolder);
+                                });
+                        builder.setNegativeButton(android.R.string.cancel, (dialog, which)
+                                -> adapter.notifyItemChanged(viewHolder.getBindingAdapterPosition()));
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 }
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return view;
+    }
+
+    private void deleteItem(List list, Item item, Context context, RecyclerView.ViewHolder viewHolder) {
+        if (list.getId() == null) {
+            list.removePrivateItem(item);
+        } else {
+            FirebaseFirestore.getInstance().collection("lists2")
+                    .document(list.getId()).collection("items")
+                    .document(item.getId())
+                    .delete()
+                    .addOnSuccessListener(unused -> Log.d("Debug", "DocumentSnapshot successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w("Debug", "Error deleting document"));
+        }
+        Toast.makeText(context, "\"" + item.getName() + "\"" +
+                " successfully deleted", Toast.LENGTH_LONG).show();
+        adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
     }
 
     @Override

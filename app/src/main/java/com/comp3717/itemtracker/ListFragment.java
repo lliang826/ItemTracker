@@ -1,5 +1,6 @@
 package com.comp3717.itemtracker;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
@@ -76,47 +78,64 @@ public class ListFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 List list = adapter.getItem(viewHolder.getBindingAdapterPosition());
-                if (list.getId() == null) {
-                    ListManager.getInstance().removePrivateList(list);
-                } else {
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    ArrayList<String> documentIDs = new ArrayList<>();
-                    db.collection("lists2")
-                            .document(list.getId()).collection("items")
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d("Debug", document.getId() + " => " + document.getData());
-                                        documentIDs.add(document.getId());
-                                    }
-                                } else {
-                                    Log.d("Debug", "Error getting sub-collection documents: ",
-                                            task.getException());
-                                }
-                            });
 
-                    for (String doc : documentIDs) {
-                        db.collection("lists2").document(list.getId())
-                                .collection("items").document(doc)
-                                .delete()
-                                .addOnSuccessListener(unused -> Log.d("Debug", "Sub-collection document deleted!"))
-                                .addOnFailureListener(e -> Log.w("Debug", "Error deleting sub-collection document"));
-                    }
-
-                    db.collection("lists2").document(list.getId())
-                            .delete()
-                            .addOnSuccessListener(unused -> Log.d("Debug", "DocumentSnapshot successfully deleted!"))
-                            .addOnFailureListener(e -> Log.w("Debug", "Error deleting document"));
-                }
-                Toast.makeText(context, "\"" + list.getName() + "\"" + " successfully deleted",
-                        Toast.LENGTH_LONG).show();
-                adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
+                // set up delete confirmation popup
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+                builder.setMessage("Are you sure you want to delete \"" + list.getName() + "\"?");
+                builder.setPositiveButton("Confirm",
+                        (dialog, which) -> {
+                            // delete the swiped list
+                            deleteList(list, context, viewHolder);
+                        });
+                builder.setNegativeButton(android.R.string.cancel, (dialog, which)
+                        -> adapter.notifyItemChanged(viewHolder.getBindingAdapterPosition()));
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return view;
+    }
+
+    private void deleteList(List list, Context context, RecyclerView.ViewHolder viewHolder) {
+        if (list.getId() == null) {
+            ListManager.getInstance().removePrivateList(list);
+        } else {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            ArrayList<String> documentIDs = new ArrayList<>();
+            db.collection("lists2")
+                    .document(list.getId()).collection("items")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                Log.d("Debug", document.getId() + " => " + document.getData());
+                                documentIDs.add(document.getId());
+                            }
+                        } else {
+                            Log.d("Debug", "Error getting sub-collection documents: ",
+                                    task.getException());
+                        }
+                    });
+
+            for (String doc : documentIDs) {
+                db.collection("lists2").document(list.getId())
+                        .collection("items").document(doc)
+                        .delete()
+                        .addOnSuccessListener(unused -> Log.d("Debug", "Sub-collection document deleted!"))
+                        .addOnFailureListener(e -> Log.w("Debug", "Error deleting sub-collection document"));
+            }
+
+            db.collection("lists2").document(list.getId())
+                    .delete()
+                    .addOnSuccessListener(unused -> Log.d("Debug", "DocumentSnapshot successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w("Debug", "Error deleting document"));
+        }
+        Toast.makeText(context, "\"" + list.getName() + "\"" + " successfully deleted",
+                Toast.LENGTH_LONG).show();
+        adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
     }
 
     @Override
