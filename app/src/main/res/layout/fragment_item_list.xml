@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
             android:textAllCaps="true"
-            android:textColor="@color/black" />
+            android:textColor="@android:color/secondary_text_light" />
 
         <TextView
             android:id="@+id/textview_itemlist_description"
