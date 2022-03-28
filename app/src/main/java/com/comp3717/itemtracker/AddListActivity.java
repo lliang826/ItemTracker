@@ -38,7 +38,7 @@ public class AddListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         EditText text_name = findViewById(R.id.edittext_addlist_name);
-        EditText text_detail = findViewById(R.id.edittext_addlist_detail);
+        EditText text_detail = findViewById(R.id.edittext_addlist_description);
         Switch switch_widget = findViewById(R.id.switch_addlist_visibility);
 
         String name_value = text_name.getText().toString();

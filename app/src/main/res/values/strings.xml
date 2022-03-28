@@ -1,23 +1,20 @@
 <resources>
-    <string name="app_name">ItemTracker</string>
-    <string name="all_mylists">My Lists</string>
-    <string name="all_search">Search</string>
-
-    <string name="action_button_add">Add Item or List</string>
-    <string name="add_item">Add Item</string>
-    <string name="add_list">Add List</string>
-
-    <string name="name">Name</string>
-    <string name="item_name">Item Name</string>
-    <string name="list_name">List Name</string>
-
-    <string name="visibility">Visibility</string>
-    <string name="make_public">Make Public</string>
-    <string name="done">Done</string>
-    <string name="listlist_mylists">My Lists</string>
-    <string name="itemlist_subscribe">Subscribe</string>
-    <string name="detail">Detail(optional)</string>
     <string name="_0">0%</string>
 
+    <string name="additem_name">Item Name</string>
 
+    <string name="addlist_description">Description (optional)</string>
+    <string name="addlist_name">List Name</string>
+
+    <string name="all_additem">Add Item</string>
+    <string name="all_addlist">Add List</string>
+    <string name="all_done">Done</string>
+    <string name="all_makepublic">Make Public</string>
+    <string name="all_visibility">Visibility</string>
+
+    <string name="app_name">ItemTracker</string>
+
+    <string name="listlist_mylists">My Lists</string>
+
+    <string name="main_additemorlist">Add Item or List</string>
 </resources>
