@@ -1,5 +1,6 @@
 package com.comp3717.itemtracker;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +44,13 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
             // Public
             holder.mItem = model;
             holder.mContentView.setText(model.getName());
+            holder.mContentView.setTextColor(Color.BLUE);
         } else {
             // Private
             position -= super.getItemCount();
             holder.mItem = mValues.get(position);
             holder.mContentView.setText(mValues.get(position).getName());
+            holder.mContentView.setTextColor(Color.BLACK);
         }
 
         View.OnClickListener onClickListener = new MyOnClickListener(holder.mItem);
