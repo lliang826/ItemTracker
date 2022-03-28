@@ -47,7 +47,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/floatingactionbutton_main_add"
         app:layout_constraintEnd_toEndOf="@+id/floatingactionbutton_main_add"
-        app:srcCompat="@drawable/ic_baseline_add_shopping_cart_24" />
+        app:srcCompat="@drawable/ic_baseline_add_task_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingactionbutton_main_list"
@@ -62,6 +62,6 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/floatingactionbutton_main_item"
         app:layout_constraintEnd_toEndOf="@+id/floatingactionbutton_main_item"
-        app:srcCompat="@drawable/ic_baseline_format_list_bulleted_24" />
+        app:srcCompat="@drawable/ic_baseline_playlist_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

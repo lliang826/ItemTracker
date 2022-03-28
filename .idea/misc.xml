@@ -33,6 +33,9 @@
         <entry key="..\:/Users/Lawrence Liang/Desktop/BCIT/Term 3/COMP 3717/Project/app/src/main/res/menu/menu_add_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lawrence Liang/Desktop/BCIT/Term 3/COMP 3717/Project/app/src/main/res/menu/menu_add_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Lawrence Liang/Desktop/BCIT/Term 3/COMP 3717/Project/app/src/main/res/menu/menu_bottom_nav.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/drawable/ic_baseline_checklist_24.xml" value="0.213" />
+        <entry key="app/src/main/res/drawable/ic_baseline_horizontal_rule_24.xml" value="0.213" />
+        <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.213" />
         <entry key="app/src/main/res/layout/activity_add_item.xml" value="0.28493150684931506" />
         <entry key="app/src/main/res/layout/activity_add_list.xml" value="0.28493150684931506" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14722222222222223" />
