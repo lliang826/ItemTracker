@@ -58,12 +58,11 @@ public class ItemFragment extends Fragment {
         TextView titleTextView = view.findViewById(R.id.textview_itemlist_title);
         TextView subtitleTextView = view.findViewById(R.id.textview_itemlist_subtitle);
         TextView descriptionTextView = view.findViewById(R.id.textview_itemlist_description);
-        titleTextView.setText(list.getName());
-        descriptionTextView.setText(list.getDescription());
         progressTextView = view.findViewById(R.id.textview_itemlist_progress);
         progressBar =view.findViewById(R.id.progress_itemlist_horizontal);
 
         titleTextView.setText(list.getName());
+        subtitleTextView.setText(list.getId() != null ? "Public List" : "Private List");
         descriptionTextView.setText(list.getDescription());
 
         DocumentReference document;
