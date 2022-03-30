@@ -8,10 +8,14 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @IgnoreExtraProperties
 public class List implements Serializable {
 
+    @Exclude
+    private final Map<String, Item> cachedItems;
     @Exclude
     private final java.util.List<Item> privateItems;
     @DocumentId
@@ -20,12 +24,14 @@ public class List implements Serializable {
     private String description;
 
     public List() {
+        this.cachedItems = new HashMap<>();
         this.privateItems = new ArrayList<>();
     }
 
     public List(String name, String description) {
         this.name = name;
         this.description = description;
+        this.cachedItems = new HashMap<>();
         this.privateItems = new ArrayList<>();
     }
 
@@ -51,6 +57,17 @@ public class List implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Item getCachedItem(Item item) {
+        Item value = cachedItems.get(item.getId());
+        if (value != null) {
+            return value;
+        } else {
+            cachedItems.put(item.getId(), item);
+            ListManager.getInstance().saveCachedLists();
+            return item;
+        }
     }
 
     @Exclude
