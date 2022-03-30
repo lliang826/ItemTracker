@@ -62,7 +62,9 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
     @NonNull
     @Override
     public com.comp3717.itemtracker.List getItem(int position) {
-        return position < super.getItemCount() ? super.getItem(position) : mValues.get(position - super.getItemCount());
+        return position < super.getItemCount()
+                ? ListManager.getInstance().getCachedList(super.getItem(position))
+                : mValues.get(position - super.getItemCount());
     }
 
     @Override

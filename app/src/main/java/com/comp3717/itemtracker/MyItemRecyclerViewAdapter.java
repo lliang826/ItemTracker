@@ -22,10 +22,12 @@ import java.util.List;
 public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, MyItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<Item> mValues;
+    private final com.comp3717.itemtracker.List list;
 
-    public MyItemRecyclerViewAdapter(List<Item> items, @NonNull FirestoreRecyclerOptions<Item> options) {
+    public MyItemRecyclerViewAdapter(List<Item> items, @NonNull FirestoreRecyclerOptions<Item> options, com.comp3717.itemtracker.List list) {
         super(options);
         mValues = items;
+        this.list = list;
     }
 
     @NonNull
@@ -72,7 +74,9 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
     @NonNull
     @Override
     public Item getItem(int position) {
-        return position < super.getItemCount() ? super.getItem(position) : mValues.get(position - super.getItemCount());
+        return position < super.getItemCount()
+                ? list.getCachedItem(super.getItem(position))
+                : mValues.get(position - super.getItemCount());
     }
 
     @Override
