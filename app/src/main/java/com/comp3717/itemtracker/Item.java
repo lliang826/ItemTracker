@@ -1,6 +1,7 @@
 package com.comp3717.itemtracker;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -13,11 +14,16 @@ public class Item implements Serializable {
 
     private String name;
 
+    @Exclude
+    private boolean done;
+
     public Item() {
+        this.done = false;
     }
 
     public Item(String name) {
         this.name = name;
+        this.done = false;
     }
 
     public String getId() {
@@ -34,5 +40,14 @@ public class Item implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+        ListManager.getInstance().savePrivateLists();
     }
 }

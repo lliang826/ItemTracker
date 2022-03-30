@@ -49,9 +49,11 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
             holder.mContentView.setText(mValues.get(position).getName());
             holder.mContentView.setTextColor(Color.BLACK);
         }
+        holder.checkBox.setChecked(holder.mItem.isDone());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                holder.mItem.setDone(isChecked);
                 if (isChecked) {
                     ItemFragment.total_checked++;
                 } else {
