@@ -44,18 +44,9 @@ public class ListManager {
         return(INSTANCE);
     }
 
-    public void saveCachedLists() {
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putString(CACHED_LISTS, new Gson().toJson(cachedLists));
-        editor.apply();
-    }
-
-    public void savePrivateLists() {
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putString(PRIVATE_LISTS, new Gson().toJson(privateLists));
-        editor.apply();
+    public void save() {
+        saveCachedLists();
+        savePrivateLists();
     }
 
     public com.comp3717.itemtracker.List getCachedList(com.comp3717.itemtracker.List list) {
@@ -100,5 +91,19 @@ public class ListManager {
             privateLists = new Gson().fromJson(prefs.getString(PRIVATE_LISTS, null), LIST_TYPE);
         }
         return privateLists;
+    }
+
+    private void saveCachedLists() {
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString(CACHED_LISTS, new Gson().toJson(cachedLists));
+        editor.apply();
+    }
+
+    private void savePrivateLists() {
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString(PRIVATE_LISTS, new Gson().toJson(privateLists));
+        editor.apply();
     }
 }

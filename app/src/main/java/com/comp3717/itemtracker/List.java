@@ -65,7 +65,7 @@ public class List implements Serializable {
             return value;
         } else {
             cachedItems.put(item.getId(), item);
-            ListManager.getInstance().saveCachedLists();
+            ListManager.getInstance().save();
             return item;
         }
     }
@@ -77,13 +77,13 @@ public class List implements Serializable {
 
     public boolean addPrivateItem(Item item) {
         boolean result = privateItems.add(item);
-        ListManager.getInstance().savePrivateLists();
+        ListManager.getInstance().save();
         return result;
     }
 
     public boolean removePrivateItem(Item item) {
         boolean result = privateItems.remove(item);
-        ListManager.getInstance().savePrivateLists();
+        ListManager.getInstance().save();
         return result;
     }
 

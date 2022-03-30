@@ -48,6 +48,6 @@ public class Item implements Serializable {
 
     public void setDone(boolean done) {
         this.done = done;
-        ListManager.getInstance().savePrivateLists();
+        ListManager.getInstance().save();
     }
 }
