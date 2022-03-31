@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,23 +48,22 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
             holder.mContentView.setTextColor(Color.BLACK);
         }
         holder.checkBox.setChecked(model.isDone());
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                model.setDone(isChecked);
-                if (isChecked) {
-                    ItemFragment.total_checked++;
-                } else {
-                    ItemFragment.total_checked--;
-                }
-                int percentage = 0;
-                if(getItemCount() > 0) {
-                    percentage = ItemFragment.total_checked * 100 / getItemCount() ;
-                }
-                ItemFragment.progressTextView.setText(percentage + "%");
-                ItemFragment.progressBar.setProgress(percentage);
-            }
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            model.setDone(isChecked);
+            setProgressBar();
         });
+    }
+
+    public void setProgressBar() {
+        float counter = 0;
+        for (Item item : mValues) {
+            if (item.isDone()) {
+                counter++;
+            }
+        }
+        counter = counter / getItemCount() * 100;
+        ItemFragment.progressTextView.setText((int) counter + "%");
+        ItemFragment.progressBar.setProgress((int) counter);
     }
 
     @NonNull

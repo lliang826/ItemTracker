@@ -28,7 +28,6 @@ import com.google.firebase.firestore.Query;
  */
 public class ItemFragment extends Fragment {
 
-    public static int total_checked = 0;
     public static TextView progressTextView;
     public static ProgressBar progressBar;
 
@@ -146,6 +145,7 @@ public class ItemFragment extends Fragment {
         if (list.getId() != null) {
             adapter.startListening();
         }
+        adapter.setProgressBar();
     }
 
     @Override
@@ -155,6 +155,5 @@ public class ItemFragment extends Fragment {
         if (list.getId() != null) {
             adapter.stopListening();
         }
-        total_checked = 0;
     }
 }
