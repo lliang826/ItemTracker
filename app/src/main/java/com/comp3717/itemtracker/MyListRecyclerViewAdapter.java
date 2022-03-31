@@ -40,22 +40,18 @@ public class MyListRecyclerViewAdapter extends FirestoreRecyclerAdapter<com.comp
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull com.comp3717.itemtracker.List model) {
+        holder.mItem = model;
+        holder.mContentViewName.setText(model.getName());
+        holder.mContentViewDescription.setText(model.getDescription());
         if (position < super.getItemCount()) {
             // Public
-            holder.mItem = model;
-            holder.mContentViewName.setText(model.getName());
             holder.mContentViewName.setTextColor(Color.BLUE);
-            holder.mContentViewDescription.setText(model.getDescription());
         } else {
             // Private
-            position -= super.getItemCount();
-            holder.mItem = mValues.get(position);
-            holder.mContentViewName.setText(mValues.get(position).getName());
             holder.mContentViewName.setTextColor(Color.BLACK);
-            holder.mContentViewDescription.setText(mValues.get(position).getDescription());
         }
 
-        View.OnClickListener onClickListener = new MyOnClickListener(holder.mItem);
+        View.OnClickListener onClickListener = new MyOnClickListener(model);
         holder.itemView.setOnClickListener(onClickListener);
     }
 

@@ -39,23 +39,20 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull Item model) {
+        holder.mItem = model;
+        holder.mContentView.setText(model.getName());
         if (position < super.getItemCount()) {
             // Public
-            holder.mItem = model;
-            holder.mContentView.setText(model.getName());
             holder.mContentView.setTextColor(Color.BLUE);
         } else {
             // Private
-            position -= super.getItemCount();
-            holder.mItem = mValues.get(position);
-            holder.mContentView.setText(mValues.get(position).getName());
             holder.mContentView.setTextColor(Color.BLACK);
         }
-        holder.checkBox.setChecked(holder.mItem.isDone());
+        holder.checkBox.setChecked(model.isDone());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                holder.mItem.setDone(isChecked);
+                model.setDone(isChecked);
                 if (isChecked) {
                     ItemFragment.total_checked++;
                 } else {
