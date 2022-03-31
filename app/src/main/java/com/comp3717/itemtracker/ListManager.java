@@ -54,7 +54,7 @@ public class ListManager {
         if (value != null) {
             return value;
         } else {
-            cachedLists.put(list.getId(), list);
+            cachedLists.put(list.getId() + "", list);
             saveCachedLists();
             return list;
         }
