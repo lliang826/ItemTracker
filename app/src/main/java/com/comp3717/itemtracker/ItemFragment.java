@@ -84,7 +84,7 @@ public class ItemFragment extends Fragment {
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), options, list);
+        adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), list, options);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 

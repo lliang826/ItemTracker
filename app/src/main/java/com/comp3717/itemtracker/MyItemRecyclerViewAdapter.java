@@ -24,7 +24,7 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
     private final List<Item> mValues;
     private final com.comp3717.itemtracker.List list;
 
-    public MyItemRecyclerViewAdapter(List<Item> items, @NonNull FirestoreRecyclerOptions<Item> options, com.comp3717.itemtracker.List list) {
+    public MyItemRecyclerViewAdapter(List<Item> items, com.comp3717.itemtracker.List list, @NonNull FirestoreRecyclerOptions<Item> options) {
         super(options);
         mValues = items;
         this.list = list;
