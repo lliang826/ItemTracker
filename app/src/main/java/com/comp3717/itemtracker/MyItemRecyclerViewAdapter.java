@@ -2,6 +2,7 @@ package com.comp3717.itemtracker;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -48,9 +49,16 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
             holder.mContentView.setTextColor(Color.BLACK);
         }
         holder.checkBox.setChecked(model.isDone());
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            model.setDone(isChecked);
-            setProgressBar();
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.checkBox.isChecked()) {
+                    model.setDone(true);
+                } else {
+                    model.setDone(false);
+                }
+                setProgressBar();
+            }
         });
     }
 
