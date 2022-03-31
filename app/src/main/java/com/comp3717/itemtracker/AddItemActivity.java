@@ -121,7 +121,8 @@ public class AddItemActivity extends AppCompatActivity {
 
                 } else if (!aSwitch.isChecked()) {
                     Item newItem = new Item(itemName);
-                    boolean added = list.addPrivateItem(newItem);
+                    List cachedList = ListManager.getInstance().getCachedList(list);
+                    boolean added = cachedList.addPrivateItem(newItem);
                     if (added) {
                         finish();
                         Toast.makeText(AddItemActivity.this,
