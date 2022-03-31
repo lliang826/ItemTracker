@@ -70,6 +70,10 @@ public class List implements Serializable {
         }
     }
 
+    public int getCachedItemSize() {
+        return this.cachedItems.size();
+    }
+
     @Exclude
     public java.util.List<Item> getPrivateItems() {
         return privateItems;

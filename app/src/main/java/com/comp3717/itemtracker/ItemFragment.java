@@ -129,7 +129,8 @@ public class ItemFragment extends Fragment {
         return view;
     }
 
-    private void deleteItem(List list, Item item, Context context, RecyclerView.ViewHolder viewHolder) {
+    private void deleteItem(
+            com.comp3717.itemtracker.List list, Item item, Context context, RecyclerView.ViewHolder viewHolder) {
         if (item.getId() == null) {
             list.removePrivateItem(item);
         } else {
@@ -143,6 +144,7 @@ public class ItemFragment extends Fragment {
         Toast.makeText(context, "\"" + item.getName() + "\"" +
                 " successfully deleted", Toast.LENGTH_LONG).show();
         adapter.notifyItemRemoved(viewHolder.getBindingAdapterPosition());
+        adapter.notifyItemRangeChanged(viewHolder.getBindingAdapterPosition(), list.getCachedItemSize());
     }
 
     @Override
