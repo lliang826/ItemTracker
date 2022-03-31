@@ -82,7 +82,14 @@ public class ItemFragment extends Fragment {
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_itemlist);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context) {
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                // set the progress bar when the layout manager finishes laying down all the items
+                adapter.setProgressBar();
+            }
+        });
         adapter = new MyItemRecyclerViewAdapter(list.getPrivateItems(), list, options);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
@@ -123,7 +130,7 @@ public class ItemFragment extends Fragment {
     }
 
     private void deleteItem(List list, Item item, Context context, RecyclerView.ViewHolder viewHolder) {
-        if (list.getId() == null) {
+        if (item.getId() == null) {
             list.removePrivateItem(item);
         } else {
             FirebaseFirestore.getInstance().collection("lists2")
@@ -145,6 +152,11 @@ public class ItemFragment extends Fragment {
         if (list.getId() != null) {
             adapter.startListening();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         adapter.setProgressBar();
     }
 

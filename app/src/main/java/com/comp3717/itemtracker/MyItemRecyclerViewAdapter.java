@@ -56,8 +56,8 @@ public class MyItemRecyclerViewAdapter extends FirestoreRecyclerAdapter<Item, My
 
     public void setProgressBar() {
         float counter = 0;
-        for (Item item : mValues) {
-            if (item.isDone()) {
+        for (int i = 0; i < getItemCount(); i++) {
+            if (getItem(i).isDone()) {
                 counter++;
             }
         }
