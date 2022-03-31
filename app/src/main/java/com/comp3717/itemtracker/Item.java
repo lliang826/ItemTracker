@@ -42,6 +42,7 @@ public class Item implements Serializable {
         this.name = name;
     }
 
+    @Exclude
     public boolean isDone() {
         return done;
     }
