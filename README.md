@@ -1,8 +1,8 @@
 # ItemTracker
 
 Team members:  
-- [Sunwoo Park] (https://github.com/swparkaust)  
-- [Sheng Qin] (https://github.com/qindroid)
+- [Sunwoo Park](https://github.com/swparkaust)  
+- [Sheng Qin](https://github.com/qindroid)
 - Lawrence Liang
 
 
