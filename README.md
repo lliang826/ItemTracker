@@ -1,5 +1,11 @@
 # ItemTracker
 
+Team members:  
+- [Sunwoo Park] (https://github.com/swparkaust)  
+- [Sheng Qin] (https://github.com/qindroid)
+- Lawrence Liang
+
+
 ItemTracker is a to-do list/planning app built with Android Studio using Java. Unlike ordinary to-do list apps, ItemTracker
 was built around the idea of public/private lists and public/private items.
 
